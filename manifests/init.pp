@@ -7,6 +7,7 @@ class nginx {
 		$docroot = '/var/www'
 		$confdir = '/etc/nginx'
 		$blockdir = '/etc/nginx/conf.d'
+		$provider = 'rpm'
 		}
 	'windows' : {
 		$package = 'nginx-service'
@@ -15,6 +16,7 @@ class nginx {
 		$docroot = 'C:/ProgramData/nginx/html'
 		$confdir = 'C:/ProgramData/nginx/conf'
 		$blockdir = 'C:/ProgramData/nginx/conf.d'
+		$provider = 'chocalatey'
 		}
 	default : {
 		fail("Module ${module_name} is not supported on ${::osfamily}")
@@ -28,6 +30,7 @@ class nginx {
 
     package { $package:
 	ensure => 'present',
+	provider => $provider,
 	}
 
     file { $docroot:
