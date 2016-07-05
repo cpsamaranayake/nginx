@@ -14,7 +14,7 @@ class nginx {
 		$group = 'Administrators'
 		$docroot = 'C:/ProgramData/nginx/html'
 		$confdir = 'C:/ProgramData/nginx/conf'
-		$blockdir = 'C:/ProgramData/nginx/conf.d' # new parameter
+		$blockdir = 'C:/ProgramData/nginx/conf.d'
 		}
 	default : {
 		fail("Module ${module_name} is not supported on ${::osfamily}")
@@ -47,7 +47,7 @@ class nginx {
 
     file { "${blockdir}/default.conf":
 	ensure => 'file',
-	source => "puppet:///modules/nginx/default-${::osfamily}.conf",
+	source => "puppet:///modules/nginx/default-${::kernel}.conf",
 	notify => Service['nginx'],
 	}
 
