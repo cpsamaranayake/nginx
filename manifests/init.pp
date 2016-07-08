@@ -7,7 +7,7 @@ class nginx {
 		$docroot = '/var/www'
 		$confdir = '/etc/nginx'
 		$blockdir = '/etc/nginx/conf.d'
-		$provider = 'rpm'
+		$logdir	= '/var/log/nginx'
 		}
 	'windows' : {
 		$package = 'nginx-service'
@@ -16,12 +16,21 @@ class nginx {
 		$docroot = 'C:/ProgramData/nginx/html'
 		$confdir = 'C:/ProgramData/nginx/conf'
 		$blockdir = 'C:/ProgramData/nginx/conf.d'
-		$provider = 'chocolatey'
+		$logdir = 'C:/ProgramData/nginx/logs'
 		}
 	default : {
 		fail("Module ${module_name} is not supported on ${::osfamily}")
 		}
 	}
+
+# Select the user based on the OS family.
+
+    $user = $::osfamily ? {
+	'windows' => 'no-body',
+	'redhat' => 'nginx',
+	'debian' => 'www-data',
+	}
+
     File {
 	owner => $owner,
 	group => $group,
@@ -30,7 +39,6 @@ class nginx {
 
     package { $package:
 	ensure => 'present',
-	provider => $provider,
 	}
 
     file { $docroot:
@@ -39,18 +47,18 @@ class nginx {
 
     file { "${docroot}/index.html":
 	ensure => 'file',
-	source => 'puppet:///modules/nginx/index.html',
+	content => template('nginx/index.html.erb'),
 	}
 
     file { "${confdir}/nginx.conf":
 	ensure => 'file',
-	source => "puppet:///modules/nginx/${::osfamily}.conf",
+	content => template('nginx/nginx.conf.erb'),
 	notify => Service['nginx'],
 	}
 
     file { "${blockdir}/default.conf":
 	ensure => 'file',
-	source => "puppet:///modules/nginx/default-${::kernel}.conf",
+	content => template('nginx/default.conf.erb'),
 	notify => Service['nginx'],
 	}
 
