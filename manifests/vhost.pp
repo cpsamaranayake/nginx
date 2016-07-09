@@ -19,7 +19,7 @@ define nginx::vhost (
 
   file { $docroot :
     ensure => 'directory',
-    before => File["nginx-vhost-${title}"],
+    before => File["${docroot}/index.html"],
 	}
  
   file { "${docroot}/index.html" :
