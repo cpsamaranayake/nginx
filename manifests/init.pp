@@ -41,14 +41,19 @@ class nginx {
 	ensure => 'present',
 	}
 
-    file { $docroot:
+    nginx::vhost { 'default':
+	docroot => $docroot,
+	servername => $::fqdn,
+	}
+
+    file { "${docroot}/vhost":
 	ensure => 'directory',
 	}
 
-    file { "${docroot}/index.html":
-	ensure => 'file',
-	content => template('nginx/index.html.erb'),
-	}
+#    file { "${docroot}/index.html":
+#	ensure => 'file',
+#	content => template('nginx/index.html.erb'),
+#	}
 
     file { "${confdir}/nginx.conf":
 	ensure => 'file',
@@ -56,11 +61,11 @@ class nginx {
 	notify => Service['nginx'],
 	}
 
-    file { "${blockdir}/default.conf":
-	ensure => 'file',
-	content => template('nginx/default.conf.erb'),
-	notify => Service['nginx'],
-	}
+#    file { "${blockdir}/default.conf":
+#	ensure => 'file',
+#	content => template('nginx/vhost.conf.erb'),
+#	notify => Service['nginx'],
+#	}
 
     service { 'nginx':
 	ensure => 'running',

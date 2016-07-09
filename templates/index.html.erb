@@ -2,8 +2,13 @@
 <title> Welcome to Puppet Enterprise </title>
 <body>
 <h1> Hello !!! This is a puppet managed Web site. </h1>
-<h3> You have connected to "<%= @fqdn %>" web server </h3>
-<h3> System uptime is: <%= @uptime %> </h3>
-<h3> Operating System Family is: <%= @osfamily %> </h3>
+<% if @servername -%>
+<h3> Welcome to the <%= @servername %> Virtual host. </h3>
+<% else -%>
+<h2> Welcome to <%= @fqdn %> </h2>
+<% end -%>
+	<p>My IP address is : <%= @ipaddress %></p>
+	<p>My uptime is : <%= @uptime %></p>
+	<p>This is a <%= @osfamily %> system. </p>
 </body>
 </html>
