@@ -1,13 +1,13 @@
 define nginx::vhost (
    $port = '80',
-   $title = $title,
-   $docroot = "${nginx::docroot}/vhost/${title}
+   $servername = $title,
+   $docroot = "${nginx::docroot}/vhosts/${title}",
 ) {
 
   File {
-	owner = $nginx::owner,
-	group = $nginx::group,
-	mode = '0644',
+	owner => $nginx::owner,
+	group => $nginx::group,
+	mode => '0644',
 	}
 
   file { "nginx-vhost-${title}" :

@@ -46,7 +46,7 @@ class nginx {
 	servername => $::fqdn,
 	}
 
-    file { "${docroot}/vhost":
+    file { "${docroot}/vhosts":
 	ensure => 'directory',
 	}
 
