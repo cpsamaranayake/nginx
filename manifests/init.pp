@@ -1,5 +1,5 @@
 class nginx (
-  $docroot  = $nginx::params::docroot,
+  $docroot,
   $confdir  = $nginx::params::confdir,
   $blockdir = $nginx::params::blockdir,
   $owner    = $nginx::params::owner,
